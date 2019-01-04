@@ -156,10 +156,4 @@ describe('DELETE /todos/:id', () => {
         })
         .end(done)
     });
-    it('should return 404 for non-object ids', (done) => {
-      // request(app)
-      //   .delete(`/todos/123`)
-      //   .expect(404)
-      //   .end(done)
-    });
 });

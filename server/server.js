@@ -1,3 +1,4 @@
+require('./config/config');
 const _ = require('lodash');
 const { ObjectID } = require('mongodb');
 const express = require('express');
@@ -9,11 +10,19 @@ var { User } = require('./models/User');
 
 var app  = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
 // TODOS
+app.get('/todos', (req, res) => {
+  Todo.find().then((todos) => {
+    res.send({ todos, })
+  }, (e) => {
+    res.status(400).send(e);
+  });
+});
+
 app.post('/todos', (req, res) => {
   var todo = new Todo({
     text: req.body.text
@@ -22,14 +31,6 @@ app.post('/todos', (req, res) => {
     res.send(doc);
   }, (err) => {
     res.status(400).send(err)
-  });
-});
-
-app.get('/todos', (req, res) => {
-  Todo.find().then((todos) => {
-    res.send({ todos, })
-  }, (e) => {
-    res.status(400).send(e);
   });
 });
 
