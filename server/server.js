@@ -8,6 +8,7 @@ var { mongoose } = require('./db/mongoose');
 var { Todo } = require('./models/Todo');
 var { User } = require('./models/User');
 
+// Initialize Express
 var app  = express();
 
 const port = process.env.PORT;
@@ -24,9 +25,7 @@ app.get('/todos', (req, res) => {
 });
 
 app.post('/todos', (req, res) => {
-  var todo = new Todo({
-    text: req.body.text
-  });
+  var todo = new Todo({ text: req.body.text });
   todo.save().then((doc) => {
     res.send(doc);
   }, (err) => {
@@ -43,12 +42,11 @@ app.get('/todos/:id', (req, res) => {
     return res.status(404).send()
   }
 
-  Todo.findById(id).then((todo) => {
-    if (!todo) {
-      return res.status(404).send()
-    }
-    return res.send({todo, })
-  }).catch((e) => res.status(400).send());
+  Todo.findById(id).then((todo) => (
+    !todo
+     ? res.status(404).send()
+     : res.send({todo, })
+  )).catch((e) => res.status(400).send());
 });
 
 app.delete('/todos/:id', (req, res) => {
@@ -84,12 +82,11 @@ app.patch('/todos/:id', (req, res) => {
     $set: body
   }, {
     new: true
-  }).then((todo) => {
-    if(!todo) {
-      return res.status(404).send();
-    }
-    res.send({todo, });
-  }).catch((e) => {
+  }).then((todo) => (
+    !todo
+     ? res.status(404).send()
+     : res.send({todo, })
+  )).catch((e) => {
     res.status(400).send();
   })
 
