@@ -42,6 +42,7 @@ UserSchema.methods.toJSON = function () {
   return _.pick(userObject, ['_id', 'email'])
 };
 
+// Insetances
 UserSchema.methods.generateAuthToken = function () {
   var user = this;
   var access = 'auth';
@@ -50,6 +51,18 @@ UserSchema.methods.generateAuthToken = function () {
 
   return user.save().then(() => token)
 };
+
+UserSchema.methods.removeToken = function (token) {
+  var user = this;
+
+  return user.updateOne({
+    $pull: {
+      tokens: {
+        token,
+      }
+    }
+  })
+}
 
 // statics
 UserSchema.statics.findByToken = function (token) {
@@ -100,6 +113,7 @@ UserSchema.pre('save', function (next) {
     next();
   }
 });
+
 // User Model
 var User = mongoose.model('User', UserSchema);
 
