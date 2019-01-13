@@ -107,6 +107,7 @@ app.patch('/todos/:id', authenticate, (req, res) => {
 
 // USERS
 app.post('/users', (req, res) => {
+  console.log({req, res})
   var body = _.pick(req.body, ['email', 'password']);
   var user = new User(body)
 
