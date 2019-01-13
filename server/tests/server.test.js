@@ -165,7 +165,7 @@ describe('DELETE /todos/:id', () => {
 describe('PATCH /todos/:id', () => {
   it('should update a todo', (done) => {
     var hexId = todos[0]._id.toHexString();
-    // auth as first user
+
     request(app)
       .patch(`/todos/${hexId}`)
       .set('x-auth', users[0].tokens[0].token)
@@ -180,9 +180,6 @@ describe('PATCH /todos/:id', () => {
       .end(done)
   });
 
-  // duplicate above test
-  // try to update first todo as second user
-  // assert 404 response
   it('should not update a todo created by other user', (done) => {
     var hexId = todos[0]._id.toHexString();
 
